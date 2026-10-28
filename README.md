@@ -6,6 +6,7 @@ A clothing showcase platform featuring the most popular outerwear, tops, and bot
 
 ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?logo=laravel&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-777BB4?logo=php&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white)
 
 
 ### 🌐 [Visit Website](https://mijusan.wasmer.app/)
@@ -39,10 +40,8 @@ Mijusan is a fashion website inspired by the simple and functional style of Uniq
 |:---:|:---:|
 | ![Top](screenshots/top.png) | ![Bottom](screenshots/bottom.png) |
 
-## 🛠️ Built With
 
-Laravel · PHP · MySQL · Bootstrap · Wasmer
+Laravel · PHP · SQLite · Bootstrap · Wasmer
 
 ---
 
-👤 Created by [Your Name](https://github.com/username)
