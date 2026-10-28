@@ -30,13 +30,6 @@ Mijusan is a fashion website inspired by the simple and functional style of Uniq
 - Fully responsive on desktop, tablet, and mobile
 - Product management with full CRUD (create, read, update, delete)
 
-## 📸 Preview
-
-<img width="855" height="885" alt="image" src="https://github.com/user-attachments/assets/c555c9ff-d26e-433c-b3ba-75f8e8ecea81" />
-
-
-<img width="1140" height="888" alt="image" src="https://github.com/user-attachments/assets/7eb0cbb9-b408-461f-9c9b-647898cd2b5a" />
-
 
 ## 🛠️ Built With
 
