@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Str;
+use App\Models\Product;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -34,57 +34,31 @@ class HomeController extends Controller
             ];
         }, $heroCards, array_keys($heroCards));
 
-        $popular = [
-            'black-blazer.png',
-            'cotton-peplum-top.png',
-            'knit-cardigan-long-sleeve-sweater-loose-fit-candy.png',
-            'long-denim-pants-regular-fit-jeans-cotton-arumi.png',
-            't-shirt-short-sleeve-regular-fit-cotton-nanami.png',
-            'bomber-jacket-regular-fit-polyester-reygan.png',
-            'long-straight-denim-pants-loose-fit-jeans-cotton-cassie.png',
-            'h-line-skirt-front-pocket-corduroy-marigold.png',
-        ];
+        $popularDb = Product::where('category', 'popular')->orWhereIn('slug', [
+            'black-blazer',
+            'cotton-peplum-top',
+            'knit-cardigan-long-sleeve-sweater-loose-fit-candy',
+            'long-denim-pants-regular-fit-jeans-cotton-arumi',
+            't-shirt-short-sleeve-regular-fit-cotton-nanami',
+            'bomber-jacket-regular-fit-polyester-reygan',
+            'long-straight-denim-pants-loose-fit-jeans-cotton-cassie',
+            'h-line-skirt-front-pocket-corduroy-marigold',
+        ])->get();
 
-        $topWear = [
-            'fine-knit-polo-neck.png',
-            'basic-shirt-short-sleeve.png',
-            'crew-neck.png',
-            'cotton-peplum-top.png',
-            'striped-shirt.png',
-            'regular-tshirt.png',
-        ];
+        $topWearDb = Product::where('category', 'top')->take(8)->get();
+        $outerWearDb = Product::where('category', 'outer')->take(8)->get();
+        $bottomWearDb = Product::where('category', 'bottom')->take(8)->get();
 
-        $outerWear = [
-            'dark-turquoise-nylon-windbreaker.png',
-            'collared-jacket.png',
-            'pile-lined-fleece-blouson.png',
-            'black-blazer.png',
-            'black-cardigan.png',
-            'black-long-cat.png',
-        ];
-
-        $bottomWear = [
-            'long-jogger-pants-relaxed-fit-drawstring-frenzy.png',
-            'long-denim-pants-regular-fit-cotton-casey.png',
-            'long-chino-pants-regular-fit-ferrero.png',
-            'long-denim-pants-regular-fit-jeans-cotton-arumi.png',
-            'long-straight-denim-pants-loose-fit-jeans-cotton-cassie.png',
-            'midi-flare-skirt-babyterry-kasumi.png',
-        ];
-
-        $formatProducts = function (array $images): array {
-            return array_map(function ($image) {
-                $base = pathinfo($image, PATHINFO_FILENAME);
-                $name = Str::headline(str_replace('-', ' ', $base));
-
+        $formatProducts = function ($products) {
+            return $products->map(function ($product) {
                 return [
-                    'name' => $name,
-                    'price' => 299000,
-                    'image' => asset('images/' . $image),
-                    'secondImage' => asset('images/' . $image),
-                    'href' => route('product.show', ['productName' => $base]),
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'image' => $product->image_url,
+                    'secondImage' => $product->second_image_url,
+                    'href' => route('product.show', ['productName' => $product->slug]),
                 ];
-            }, $images);
+            })->all();
         };
 
         return view('home', [
@@ -92,15 +66,10 @@ class HomeController extends Controller
             'heroSlides' => $heroSlides,
             'heroCards' => $heroCards,
             'heroCardItems' => $heroCardItems,
-            'popular' => $popular,
-            'popularProducts' => $formatProducts($popular),
-            'topWear' => $topWear,
-            'topWearProducts' => $formatProducts($topWear),
-            'outerWear' => $outerWear,
-            'outerWearProducts' => $formatProducts($outerWear),
-            'bottomWear' => $bottomWear,
-            'bottomWearProducts' => $formatProducts($bottomWear),
+            'popularProducts' => $formatProducts($popularDb),
+            'topWearProducts' => $formatProducts($topWearDb),
+            'outerWearProducts' => $formatProducts($outerWearDb),
+            'bottomWearProducts' => $formatProducts($bottomWearDb),
         ]);
     }
 }
-
