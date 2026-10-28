@@ -14,6 +14,33 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function showRegister(): View
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['nullable', 'string', 'max:255', 'unique:users,username'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
+
+        $user = \App\Models\User::create([
+            'name' => $validated['name'],
+            'username' => $validated['username'] ?? \Illuminate\Support\Str::slug($validated['name']),
+            'email' => $validated['email'],
+            'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
+            'role' => 'Customer',
+        ]);
+
+        Auth::login($user);
+
+        return redirect()->route('home');
+    }
+
     public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([

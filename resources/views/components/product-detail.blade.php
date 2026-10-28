@@ -4,6 +4,7 @@
     'description' => '',
     'checkoutHref' => '#',
     'wishlisted' => false,
+    'toggleUrl' => null,
 ])
 
 <div {{ $attributes->class('w-full') }}>
@@ -17,10 +18,22 @@
             Checkout Now
         </a>
 
-        <button type="button" data-wishlist aria-label="Add to wishlist" aria-pressed="{{ $wishlisted ? 'true' : 'false' }}"
-                class="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border border-sage bg-transparent text-sage transition-colors duration-200 hover:border-brand hover:text-brand outline-none focus-visible:border-brand focus-visible:text-brand">
-            <x-icon name="heart" :size="26" data-heart class="{{ $wishlisted ? 'fill-current' : '' }}" />
-        </button>
+        @if (auth()->check())
+            <button type="button"
+                    data-wishlist
+                    data-toggle-url="{{ $toggleUrl }}"
+                    aria-label="{{ $wishlisted ? 'Remove from wishlist' : 'Add to wishlist' }}"
+                    aria-pressed="{{ $wishlisted ? 'true' : 'false' }}"
+                    class="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border bg-transparent transition-colors duration-200 outline-none {{ $wishlisted ? 'border-brand text-brand' : 'border-sage text-sage hover:border-brand hover:text-brand' }}">
+                <x-icon name="heart" :size="26" data-heart class="{{ $wishlisted ? 'fill-current' : '' }}" />
+            </button>
+        @else
+            <a href="{{ route('login') }}"
+               aria-label="Add to wishlist"
+               class="group flex h-12 w-12 items-center justify-center rounded-lg border border-sage bg-transparent text-sage transition-colors duration-200 hover:border-brand hover:text-brand outline-none">
+                <x-icon name="heart" :size="26" />
+            </a>
+        @endif
     </div>
 
     @if ($description)
@@ -32,14 +45,35 @@
 @once
     <script>
         document.querySelectorAll('[data-wishlist]').forEach((button) => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', async () => {
                 const heart = button.querySelector('[data-heart]');
-                const active = button.getAttribute('aria-pressed') !== 'true';
-                button.setAttribute('aria-pressed', active ? 'true' : 'false');
-                button.setAttribute('aria-label', active ? 'Remove from wishlist' : 'Add to wishlist');
-                heart.classList.toggle('fill-current', active);
-                button.classList.toggle('text-brand', active);
-                button.classList.toggle('border-brand', active);
+                const toggleUrl = button.dataset.toggleUrl;
+
+                if (toggleUrl) {
+                    try {
+                        const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                        const res = await fetch(toggleUrl, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': token || '{{ csrf_token() }}',
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        const data = await res.json();
+                        const active = data.status === 'added';
+
+                        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+                        button.setAttribute('aria-label', active ? 'Remove from wishlist' : 'Add to wishlist');
+                        heart.classList.toggle('fill-current', active);
+                        button.classList.toggle('text-brand', active);
+                        button.classList.toggle('border-brand', active);
+                        button.classList.toggle('text-sage', !active);
+                        button.classList.toggle('border-sage', !active);
+                    } catch (e) {
+                        console.error('Wishlist toggle error', e);
+                    }
+                }
             });
         });
     </script>

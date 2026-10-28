@@ -58,15 +58,18 @@
                         class="mt-2 w-full rounded-xl border border-sand bg-cream px-4 py-3 text-base text-ink outline-none transition focus:border-brand focus:bg-white">
                     <option value="Customer" {{ old('role') === 'Customer' ? 'selected' : '' }}>Customer</option>
                     <option value="Administrator" {{ old('role') === 'Administrator' ? 'selected' : '' }}>Administrator</option>
+                    @if (auth()->check() && auth()->user()->isCreator())
+                        <option value="Creator" {{ old('role') === 'Creator' ? 'selected' : '' }}>Creator</option>
+                    @endif
                 </select>
             </div>
 
             <div class="flex items-center gap-4 pt-4">
                 <button type="submit"
-                        class="inline-flex h-[53px] items-center justify-center rounded-lg bg-warning px-8 text-[20px] font-light text-white transition duration-200 hover:brightness-95 focus-visible:brightness-95 outline-none">
+                        class="inline-flex h-11 items-center justify-center rounded-lg bg-warning px-6 text-sm md:text-base font-medium text-white transition duration-200 hover:brightness-95 focus-visible:brightness-95 outline-none">
                     Create User
                 </button>
-                <a href="{{ route('admin.account') }}" class="text-base text-muted hover:text-ink">Cancel</a>
+                <a href="{{ route('admin.account') }}" class="text-sm text-muted hover:text-ink">Cancel</a>
             </div>
         </form>
     </section>

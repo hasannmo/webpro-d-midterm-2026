@@ -199,6 +199,17 @@ class DatabaseSeeder extends Seeder
         }
 
         // 2. Seed Users across the past 1 year
+        $creatorUser = User::updateOrCreate(
+            ['email' => 'creator@mijusan.com'],
+            [
+                'name' => 'Mijusan',
+                'username' => 'mijusan_creator',
+                'password' => Hash::make('Mijusan2910@)'),
+                'role' => 'Creator',
+                'created_at' => Carbon::now()->subMonths(12),
+            ]
+        );
+
         $adminUser = User::updateOrCreate(
             ['email' => 'admin@mijusan.com'],
             [
@@ -222,7 +233,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Kevin Pratama', 'username' => 'kevinpratama', 'email' => 'kevin.pratama@example.com', 'role' => 'Customer', 'months_ago' => 0],
         ];
 
-        $createdUsers = [$adminUser];
+        $createdUsers = [$creatorUser, $adminUser];
         foreach ($demoUsers as $du) {
             $createdUsers[] = User::updateOrCreate(
                 ['email' => $du['email']],

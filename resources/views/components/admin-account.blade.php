@@ -8,6 +8,8 @@
 @php
     $format = fn ($value) => is_numeric($value) ? number_format($value, 0, ',', '.') : $value;
     $date = fn ($value) => $value instanceof \DateTimeInterface ? $value->format('d/m/Y H:i:s') : $value;
+    $currentIsCreator = auth()->check() && auth()->user()->isCreator();
+    $currentUserId = auth()->id();
 @endphp
 
 <section {{ $attributes->class('w-full rounded-2xl border border-sand bg-white p-6 shadow-[0_4px_20px_rgb(43_36_32/0.06)] md:p-9') }}>
@@ -25,43 +27,56 @@
     @endif
 
     <a href="{{ $addHref }}"
-       class="mt-6 inline-flex h-[53px] items-center justify-center rounded-lg bg-warning px-3 text-[22px] font-light text-white transition duration-200 hover:brightness-95 focus-visible:brightness-95 outline-none">
+       class="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-warning px-4 text-base font-medium text-white transition duration-200 hover:brightness-95 focus-visible:brightness-95 outline-none">
         Add User
     </a>
 
-    <div class="mt-6 flex min-h-[82px] items-center border-t border-muted/40 px-2.5">
-        <p class="text-[18px] font-medium text-black">Total User : {{ $format($total) }}</p>
+    <div class="mt-6 flex min-h-[64px] items-center border-t border-muted/40 px-3">
+        <p class="text-base font-medium text-black">Total User : {{ $format($total) }}</p>
     </div>
 
     {{-- Table Header --}}
-    <div class="hidden border-t border-muted/40 px-2.5 py-3 text-[16px] font-semibold text-muted md:grid md:grid-cols-[1.4fr_1.6fr_1fr_1.6fr_auto] md:items-center md:gap-4">
+    <div class="hidden border-t border-muted/40 px-3 py-3 text-xs font-semibold tracking-wider text-muted uppercase md:grid md:grid-cols-[1.5fr_1.8fr_1fr_1.3fr_90px] md:items-center md:gap-4">
         <span>Username</span>
         <span>Email Address</span>
         <span>Role</span>
-        <span class="md:text-right">Created Date</span>
-        <span class="w-[90px] text-center">Action</span>
+        <span class="text-right">Created Date</span>
+        <span class="text-center">Action</span>
     </div>
 
     <ul>
         @forelse ($users as $user)
-            <li class="flex flex-col gap-1 border-t border-muted/40 px-2.5 py-4 text-[18px] font-light text-black md:grid md:min-h-[82px] md:grid-cols-[1.4fr_1.6fr_1fr_1.6fr_auto] md:items-center md:gap-4 md:py-0">
-                <span class="font-medium text-ink md:font-light">{{ $user['username'] ?? $user['name'] }}</span>
-                <a href="mailto:{{ $user['email'] }}" class="w-fit text-brand-text underline">{{ $user['email'] }}</a>
-                <span class="inline-block rounded-full px-2.5 py-0.5 text-sm {{ $user['role'] === 'Administrator' ? 'bg-brand/10 text-brand-text font-medium' : 'text-black' }}">
-                    {{ $user['role'] }}
-                </span>
-                <span class="md:text-right">{{ $date($user['date']) }}</span>
-                <button type="button"
-                        data-manage-user
-                        data-id="{{ $user['id'] }}"
-                        data-username="{{ $user['username'] ?? $user['name'] }}"
-                        data-email="{{ $user['email'] }}"
-                        data-role="{{ $user['role'] }}"
-                        data-update-url="{{ route('admin.account.update', ['id' => $user['id']]) }}"
-                        data-delete-url="{{ route('admin.account.delete', ['id' => $user['id']]) }}"
-                        class="mt-2 inline-flex h-12 w-[90px] cursor-pointer items-center justify-center rounded-md bg-sage px-3 text-[18px] font-light text-white transition duration-200 hover:brightness-95 focus-visible:brightness-95 outline-none md:mt-0">
-                    Manage
-                </button>
+            <li class="flex flex-col gap-1.5 border-t border-muted/20 px-3 py-3 text-xs md:text-sm font-light text-black md:grid md:min-h-[58px] md:grid-cols-[1.5fr_1.8fr_1fr_1.3fr_90px] md:items-center md:gap-4 md:py-0">
+                <span class="font-normal text-ink leading-tight truncate" title="{{ $user['username'] ?? $user['name'] }}">{{ $user['username'] ?? $user['name'] }}</span>
+                <a href="mailto:{{ $user['email'] }}" class="w-fit text-brand-text truncate hover:underline" title="{{ $user['email'] }}">{{ $user['email'] }}</a>
+                <div>
+                    <span class="inline-block rounded-full px-2.5 py-0.5 text-xs {{ $user['role'] === 'Creator' ? 'bg-amber-100 text-amber-800 font-semibold border border-amber-300' : ($user['role'] === 'Administrator' ? 'bg-brand/10 text-brand-text font-medium' : 'bg-cream-dark text-black font-normal') }}">
+                        {{ $user['role'] }}
+                    </span>
+                </div>
+                <span class="text-xs text-muted md:text-right whitespace-nowrap">{{ $date($user['date']) }}</span>
+                @php
+                    $isSelf = $user['id'] === $currentUserId;
+                    $canManage = $currentIsCreator ? !$isSelf : empty($user['isCreator']);
+                @endphp
+
+                @if ($canManage)
+                    <button type="button"
+                            data-manage-user
+                            data-id="{{ $user['id'] }}"
+                            data-username="{{ $user['username'] ?? $user['name'] }}"
+                            data-email="{{ $user['email'] }}"
+                            data-role="{{ $user['role'] }}"
+                            data-update-url="{{ route('admin.account.update', ['id' => $user['id']]) }}"
+                            data-delete-url="{{ route('admin.account.delete', ['id' => $user['id']]) }}"
+                            class="mt-2 inline-flex h-9 w-[80px] cursor-pointer items-center justify-center rounded-md bg-sage text-xs font-normal text-white transition duration-200 hover:brightness-95 focus-visible:brightness-95 outline-none md:mt-0 justify-self-center">
+                        Manage
+                    </button>
+                @else
+                    <span class="mt-2 inline-flex h-9 w-[80px] items-center justify-center rounded-md bg-sand/60 text-xs font-normal text-muted cursor-not-allowed md:mt-0 justify-self-center" title="{{ $isSelf ? 'You cannot manage your own account' : 'Only Creators can manage Creator accounts' }}">
+                        {{ $isSelf ? 'You' : 'Locked' }}
+                    </span>
+                @endif
             </li>
         @empty
             <li class="border-t border-muted/40 px-2.5 py-6 text-center text-muted">
@@ -100,6 +115,9 @@
                 <select name="role" id="modalRoleSelect" class="flex-1 rounded-lg border border-sand bg-cream-dark px-3 py-2 text-base text-ink outline-none focus:border-brand">
                     <option value="Customer">Customer</option>
                     <option value="Administrator">Administrator</option>
+                    @if ($currentIsCreator)
+                        <option value="Creator">Creator</option>
+                    @endif
                 </select>
                 <button type="submit" class="rounded-lg bg-brand px-5 py-2 text-sm font-medium text-white transition hover:bg-brand-dark">
                     Save Role

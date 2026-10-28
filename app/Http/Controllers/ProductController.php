@@ -41,6 +41,13 @@ class ProductController extends Controller
             ];
         })->all();
 
+        $isWishlisted = false;
+        if (auth()->check()) {
+            $isWishlisted = \App\Models\Wishlist::where('user_id', auth()->id())
+                ->where('product_id', $product->id ?? 0)
+                ->exists();
+        }
+
         return view('product-detail', [
             'product' => [
                 'id' => $product->id,
@@ -51,6 +58,7 @@ class ProductController extends Controller
                 'description' => $product->description,
                 'slug' => $product->slug,
             ],
+            'isWishlisted' => $isWishlisted,
             'discoverProducts' => $discoverProducts,
         ]);
     }

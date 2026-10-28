@@ -34,7 +34,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="price" class="block text-base font-medium text-ink">Price (IDR)</label>
-                    <input type="number" name="price" id="price" value="{{ old('price') }}" required min="0" step="1000"
+                    <input type="number" name="price" id="price" value="{{ old('price') }}" required min="0" step="any"
                            class="mt-2 w-full rounded-xl border border-sand bg-cream px-4 py-3 text-base text-ink outline-none transition focus:border-brand focus:bg-white"
                            placeholder="99000">
                 </div>
@@ -69,10 +69,10 @@
 
             <div class="flex items-center gap-4 pt-4">
                 <button type="submit"
-                        class="inline-flex h-[53px] items-center justify-center rounded-lg bg-warning px-8 text-[20px] font-light text-white transition duration-200 hover:brightness-95 focus-visible:brightness-95 outline-none">
+                        class="inline-flex h-11 items-center justify-center rounded-lg bg-warning px-6 text-sm md:text-base font-medium text-white transition duration-200 hover:brightness-95 focus-visible:brightness-95 outline-none">
                     Save Product
                 </button>
-                <a href="{{ route('admin.product') }}" class="text-base text-muted hover:text-ink">Cancel</a>
+                <a href="{{ route('admin.product') }}" class="text-sm text-muted hover:text-ink">Cancel</a>
             </div>
         </form>
     </section>

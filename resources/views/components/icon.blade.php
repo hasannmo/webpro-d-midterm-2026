@@ -40,5 +40,8 @@ stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" {{ $attributes
         @case('arrow-left')
 <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
             @break
+        @case('user')
+<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            @break
     @endswitch
 </svg>

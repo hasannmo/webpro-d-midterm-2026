@@ -12,7 +12,11 @@
 <div data-user-menu {{ $attributes->class('relative') }}>
     <button type="button" data-trigger aria-label="Open menu" aria-haspopup="menu" aria-expanded="false"
             class="flex cursor-pointer items-center justify-center text-white outline-none transition-opacity duration-200 hover:opacity-80 focus-visible:opacity-80">
-        <x-icon name="menu" :size="28" />
+        @if ($isLoggedIn)
+            <x-icon name="menu" :size="28" />
+        @else
+            <x-icon name="user" :size="26" />
+        @endif
     </button>
 
     <div data-menu role="menu" hidden
@@ -24,7 +28,7 @@
 
         <a href="{{ $orderHref }}" role="menuitem"
            class="block px-5 py-3 text-base font-normal text-black transition-colors duration-150 hover:bg-cream-dark focus-visible:bg-cream-dark outline-none">
-            My Order
+            {{ $isLoggedIn && auth()->user()->isAdmin() ? 'Manage Orders' : 'My Order' }}
         </a>
 
         @if ($isLoggedIn && auth()->user()->isAdmin())

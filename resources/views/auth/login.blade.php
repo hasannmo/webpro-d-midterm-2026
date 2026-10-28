@@ -53,7 +53,12 @@
                     </button>
                 </form>
 
-                <p class="mt-6 text-center text-xs text-muted">
+                <p class="mt-6 text-center text-sm text-muted">
+                    Don't have an account?
+                    <a href="{{ route('register') }}" class="font-medium text-brand-text hover:underline">Create an Account</a>
+                </p>
+
+                <p class="mt-4 border-t border-sand pt-4 text-center text-xs text-muted">
                     Demo credentials: <span class="font-medium text-ink">admin@mijusan.com</span> / <span class="font-medium text-ink">password</span>
                 </p>
             </div>

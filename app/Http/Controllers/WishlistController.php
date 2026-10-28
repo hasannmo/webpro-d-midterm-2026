@@ -3,28 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Wishlist;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class WishlistController extends Controller
 {
     public function index(): View
     {
-        $products = Product::whereIn('slug', [
-            'black-blazer',
-            'cotton-peplum-top',
-            'knit-cardigan-long-sleeve-sweater-loose-fit-candy',
-            'long-denim-pants-regular-fit-jeans-cotton-arumi',
-            't-shirt-short-sleeve-regular-fit-cotton-nanami',
-            'bomber-jacket-regular-fit-polyester-reygan',
-            'long-straight-denim-pants-loose-fit-jeans-cotton-cassie',
-            'h-line-skirt-front-pocket-corduroy-marigold',
-        ])->get();
+        $userId = auth()->id();
 
-        if ($products->isEmpty()) {
-            $products = Product::take(8)->get();
-        }
+        // Get actual wishlisted products for this logged-in user
+        $wishlistProducts = Product::whereHas('wishlists', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
 
-        $wishlistItems = $products->map(function ($product) {
+        $wishlistItems = $wishlistProducts->map(function ($product) {
             return [
                 'name' => $product->name,
                 'price' => $product->price,
@@ -38,4 +34,30 @@ class WishlistController extends Controller
             'wishlistItems' => $wishlistItems,
         ]);
     }
+
+    public function toggle(Request $request, int $productId): JsonResponse|RedirectResponse
+    {
+        $userId = auth()->id();
+        $wishlist = Wishlist::where('user_id', $userId)
+            ->where('product_id', $productId)
+            ->first();
+
+        if ($wishlist) {
+            $wishlist->delete();
+            $status = 'removed';
+        } else {
+            Wishlist::create([
+                'user_id' => $userId,
+                'product_id' => $productId,
+            ]);
+            $status = 'added';
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json(['status' => $status]);
+        }
+
+        return back();
+    }
 }
+

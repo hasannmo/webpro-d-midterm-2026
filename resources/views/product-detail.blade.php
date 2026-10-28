@@ -25,6 +25,8 @@
                         :name="$product['name']"
                         :price="$product['price']"
                         :description="$product['description']"
+                        :wishlisted="$isWishlisted"
+                        :toggle-url="route('wishlist.toggle', ['productId' => $product['id']])"
                         :checkout-href="route('checkout.show', ['productName' => $product['slug']])" />
                 </div>
             </div>

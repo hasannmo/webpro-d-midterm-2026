@@ -16,7 +16,18 @@
                 </h1>
             </div>
 
-            <x-product-table :items="$wishlistItems" :min="260" />
+            @if (count($wishlistItems))
+                <x-product-table :items="$wishlistItems" :min="260" />
+            @else
+                <div class="rounded-2xl border border-sand bg-white p-12 text-center shadow-sm">
+                    <p class="font-heading text-xl font-medium text-ink">Your wishlist is currently empty</p>
+                    <p class="mt-2 text-sm text-muted">Explore our catalog and heart your favorite items to save them here.</p>
+                    <a href="{{ route('home') }}"
+                       class="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-brand px-6 text-sm font-medium text-white transition hover:bg-brand-dark">
+                        Discover Products
+                    </a>
+                </div>
+            @endif
         </div>
     </section>
 @endsection

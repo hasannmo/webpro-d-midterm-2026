@@ -263,6 +263,7 @@ class AdminController extends Controller
                 'username' => $u->username ?? Str::slug($u->name),
                 'email' => $u->email,
                 'role' => $u->role ?? 'Customer',
+                'isCreator' => $u->isCreator(),
                 'date' => $u->created_at,
             ];
         })->all();
@@ -284,12 +285,14 @@ class AdminController extends Controller
 
     public function storeUser(Request $request): RedirectResponse
     {
+        $roleRules = auth()->user()->isCreator() ? 'in:Customer,Administrator,Creator' : 'in:Customer,Administrator';
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'nullable|string|max:255|unique:users,username',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:6',
-            'role' => 'required|string|in:Customer,Administrator',
+            'role' => 'required|string|' . $roleRules,
         ]);
 
         User::create([
@@ -305,24 +308,42 @@ class AdminController extends Controller
 
     public function updateUserRole(Request $request, int $id): RedirectResponse
     {
-        $user = User::findOrFail($id);
+        $targetUser = User::findOrFail($id);
+        $currentUser = auth()->user();
+
+        // If target is Creator, only a Creator can edit it (cannot edit self into lower role if desired, or can edit other creators)
+        if ($targetUser->isCreator() && !$currentUser->isCreator()) {
+            return redirect()->route('admin.account')->with('error', 'Only a Creator can modify another Creator.');
+        }
+
+        $allowedRoles = $currentUser->isCreator()
+            ? 'in:Customer,Administrator,Creator'
+            : 'in:Customer,Administrator';
 
         $validated = $request->validate([
-            'role' => 'required|string|in:Customer,Administrator',
+            'role' => 'required|string|' . $allowedRoles,
         ]);
 
-        $user->update(['role' => $validated['role']]);
+        $targetUser->update(['role' => $validated['role']]);
 
-        return redirect()->route('admin.account')->with('success', "Updated {$user->name}'s role to {$validated['role']}.");
+        return redirect()->route('admin.account')->with('success', "Updated {$targetUser->name}'s role to {$validated['role']}.");
     }
 
     public function destroyUser(int $id): RedirectResponse
     {
-        $user = User::findOrFail($id);
+        $targetUser = User::findOrFail($id);
+        $currentUser = auth()->user();
 
-        // Prevent deleting the currently authenticated or primary admin user if needed
-        $user->delete();
+        if ($targetUser->id === $currentUser->id) {
+            return redirect()->route('admin.account')->with('error', 'You cannot remove your own account.');
+        }
 
-        return redirect()->route('admin.account')->with('success', "User {$user->email} has been removed.");
+        if ($targetUser->isCreator() && !$currentUser->isCreator()) {
+            return redirect()->route('admin.account')->with('error', 'Only a Creator can remove another Creator account.');
+        }
+
+        $targetUser->delete();
+
+        return redirect()->route('admin.account')->with('success', "User {$targetUser->email} has been removed.");
     }
 }
