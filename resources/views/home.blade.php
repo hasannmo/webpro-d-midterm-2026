@@ -3,23 +3,40 @@
 @section('title', 'Home')
 
 @section('content')
-    <section class="hero">
-        <img src="{{ asset('images/'.$heroBanner) }}" alt="mijusan hero banner">
-    </section>
+    <x-hero-banner :slides="$heroSlides" />
 
     <section class="section">
         <div class="section__inner hero-cards-wrap">
-            <x-carousel class="carousel__track--hero">
-                @foreach ($heroCards as $image)
-                    <img src="{{ asset('images/'.$image) }}" alt="Lookbook {{ $loop->iteration }}">
-                @endforeach
-            </x-carousel>
+            <x-main-carousel :items="$heroCardItems" />
         </div>
     </section>
 
-    <x-product-section title="Popular Product" :products="$popular" />
+    <section class="section">
+        <div class="section__inner">
+            <h2 class="section-title">Popular Product</h2>
+            <x-product-table :items="$popularProducts" />
+        </div>
+    </section>
 
-    <x-product-section title="Top Wear"    :products="$topWear"    carousel />
-    <x-product-section title="Outer Wear"  :products="$outerWear"  carousel />
-    <x-product-section title="Bottom Wear" :products="$bottomWear" carousel />
+    <section class="section">
+        <div class="section__inner">
+            <h2 class="section-title">Top Wear</h2>
+            <x-section-carousel :items="$topWearProducts" />
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section__inner">
+            <h2 class="section-title">Outer Wear</h2>
+            <x-section-carousel :items="$outerWearProducts" />
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section__inner">
+            <h2 class="section-title">Bottom Wear</h2>
+            <x-section-carousel :items="$bottomWearProducts" />
+        </div>
+    </section>
 @endsection
+

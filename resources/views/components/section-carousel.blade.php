@@ -5,9 +5,9 @@
 @if (count($items))
     <div data-section-carousel {{ $attributes->class('relative') }}>
         <div data-track
-            class="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-proximity py-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            class="flex items-stretch gap-3 overflow-x-auto scroll-smooth snap-x snap-proximity py-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             @foreach ($items as $item)
-                <div class="w-[260px] shrink-0 snap-start md:w-[300px]">
+                <div class="flex w-[260px] shrink-0 snap-start md:w-[300px]">
                     <x-main-card
                         :name="$item['name']"
                         :price="$item['price']"
