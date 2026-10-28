@@ -3,16 +3,16 @@
 @section('title', ($query ? 'Search results for "' . $query . '"' : 'Search Products') . ' — mijusan')
 
 @section('content')
-    <section class="section py-8 md:py-14">
+    <section class="section py-6 md:py-14">
         <div class="section__inner">
-            <div class="mb-8 flex flex-col gap-2 border-b border-sand pb-6">
-                <div class="flex items-center gap-4">
+            <div class="mb-6 flex flex-col gap-2 border-b border-sand pb-4 md:mb-8 md:pb-6">
+                <div class="flex items-center gap-3 md:gap-4">
                     <a href="{{ route('home') }}"
-                       class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-ink shadow-[0_2px_8px_rgb(43_36_32/0.12)] transition duration-200 hover:bg-brand hover:text-white"
+                       class="inline-flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full bg-white text-ink shadow-[0_2px_8px_rgb(43_36_32/0.12)] transition duration-200 hover:bg-brand hover:text-white"
                        aria-label="Back to home">
-                        <x-icon name="arrow-left" :size="20" />
+                        <x-icon name="arrow-left" :size="18" class="md:h-5 md:w-5" />
                     </a>
-                    <h1 class="font-serif text-3xl font-semibold text-ink md:text-4xl">
+                    <h1 class="font-serif text-2xl font-semibold text-ink sm:text-3xl md:text-4xl">
                         @if ($query)
                             Search Results for &ldquo;{{ $query }}&rdquo;
                         @else
@@ -22,14 +22,14 @@
                 </div>
 
                 @if ($query)
-                    <p class="text-sm text-muted ml-14">
+                    <p class="text-xs md:text-sm text-muted ml-12 md:ml-14">
                         Found {{ $count }} {{ Str::plural('product', $count) }}
                     </p>
                 @endif
             </div>
 
             @if ($count > 0)
-                <x-product-table :items="$items" :min="260" />
+                <x-product-table :items="$items" :min="160" />
             @else
                 <div class="rounded-2xl border border-sand bg-white p-12 text-center shadow-sm max-w-2xl mx-auto">
                     <span class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-cream-dark text-muted mb-4">

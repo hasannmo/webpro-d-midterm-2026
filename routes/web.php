@@ -6,12 +6,14 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MyOrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RickrollController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [SearchController::class, 'index'])->name('search');
+Route::get('/rickroll', [RickrollController::class, 'redirect'])->name('rickroll');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -45,6 +47,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('/add-user', [AdminController::class, 'storeUser'])->name('account.store');
     Route::patch('/account/{id}/role', [AdminController::class, 'updateUserRole'])->name('account.update');
     Route::delete('/account/{id}', [AdminController::class, 'destroyUser'])->name('account.delete');
+
+    Route::get('/rickroll', [AdminController::class, 'rickroll'])->name('rickroll');
 });
 
 

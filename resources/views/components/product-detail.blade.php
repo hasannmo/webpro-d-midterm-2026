@@ -8,13 +8,13 @@
 ])
 
 <div {{ $attributes->class('w-full') }}>
-    <h1 class="font-heading text-[32px] font-medium leading-tight tracking-tight text-ink md:text-[40px]">{{ $name }}</h1>
+    <h1 class="font-heading text-2xl sm:text-3xl md:text-[36px] font-medium leading-tight tracking-tight text-ink">{{ $name }}</h1>
 
-    <p class="mt-3 font-heading text-[24px] font-medium leading-tight text-brand-text md:text-[28px]">IDR {{ number_format($price, 0, ',', '.') }}</p>
+    <p class="mt-2 sm:mt-3 font-heading text-xl sm:text-2xl md:text-[28px] font-medium leading-tight text-brand-text">IDR {{ number_format($price, 0, ',', '.') }}</p>
 
-    <div class="mt-10 flex items-center gap-3">
+    <div class="mt-6 sm:mt-8 flex items-center gap-2.5 sm:gap-3">
         <a href="{{ $checkoutHref }}"
-           class="inline-flex h-12 min-w-[190px] items-center justify-center rounded-lg bg-brand px-8 text-[18px] font-normal text-white transition-colors duration-200 hover:bg-brand-dark focus-visible:bg-brand-dark outline-none">
+           class="inline-flex h-11 sm:h-12 flex-1 sm:flex-initial sm:min-w-[190px] items-center justify-center rounded-lg bg-brand px-6 text-sm sm:text-base font-medium text-white transition-colors duration-200 hover:bg-brand-dark focus-visible:bg-brand-dark outline-none">
             Checkout Now
         </a>
 
@@ -24,21 +24,21 @@
                     data-toggle-url="{{ $toggleUrl }}"
                     aria-label="{{ $wishlisted ? 'Remove from wishlist' : 'Add to wishlist' }}"
                     aria-pressed="{{ $wishlisted ? 'true' : 'false' }}"
-                    class="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border bg-transparent transition-colors duration-200 outline-none {{ $wishlisted ? 'border-brand text-brand' : 'border-sage text-sage hover:border-brand hover:text-brand' }}">
-                <x-icon name="heart" :size="26" data-heart class="{{ $wishlisted ? 'fill-current' : '' }}" />
+                    class="group flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 cursor-pointer items-center justify-center rounded-lg border bg-transparent transition-colors duration-200 outline-none {{ $wishlisted ? 'border-brand text-brand' : 'border-sage text-sage hover:border-brand hover:text-brand' }}">
+                <x-icon name="heart" :size="24" data-heart class="{{ $wishlisted ? 'fill-current' : '' }}" />
             </button>
         @else
             <a href="{{ route('login') }}"
                aria-label="Add to wishlist"
-               class="group flex h-12 w-12 items-center justify-center rounded-lg border border-sage bg-transparent text-sage transition-colors duration-200 hover:border-brand hover:text-brand outline-none">
-                <x-icon name="heart" :size="26" />
+               class="group flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-lg border border-sage bg-transparent text-sage transition-colors duration-200 hover:border-brand hover:text-brand outline-none">
+                <x-icon name="heart" :size="24" />
             </a>
         @endif
     </div>
 
     @if ($description)
-        <h2 class="mt-10 font-heading text-[20px] font-medium leading-tight text-ink">Product Description</h2>
-        <p class="mt-2 whitespace-pre-line text-base font-normal leading-snug text-black">{{ $description }}</p>
+        <h2 class="mt-6 sm:mt-8 font-heading text-lg sm:text-xl font-medium leading-tight text-ink">Product Description</h2>
+        <p class="mt-1.5 sm:mt-2 whitespace-pre-line text-xs sm:text-sm md:text-base font-normal leading-relaxed text-black/80">{{ $description }}</p>
     @endif
 </div>
 

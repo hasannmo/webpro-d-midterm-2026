@@ -14,14 +14,14 @@
             </form>
 
             <div class="header-icons">
-                <div class="header-glass-pill flex items-center gap-3 px-3.5 py-1.5 rounded-full transition-all duration-300">
+                <div class="header-glass-pill flex items-center gap-2 md:gap-3 px-2 md:px-3.5 py-1 md:py-1.5 rounded-full transition-all duration-300">
                     @if (auth()->check())
-                        <span class="hidden sm:inline-block text-sm font-medium text-white/95">
+                        <span class="hidden md:inline-block text-xs md:text-sm font-medium text-white/95 truncate max-w-[120px]">
                             Hi, {{ auth()->user()->name }}!
                         </span>
                     @endif
                     <a href="{{ route('wishlist') }}" aria-label="Wishlist" class="flex items-center text-white transition-opacity hover:opacity-80">
-                        <x-icon name="heart" :size="26" />
+                        <x-icon name="heart" :size="22" class="md:h-[26px] md:w-[26px]" />
                     </a>
                     <x-user-menu
                         :wishlist-href="route('wishlist')"

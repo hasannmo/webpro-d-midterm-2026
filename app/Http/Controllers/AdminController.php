@@ -346,4 +346,18 @@ class AdminController extends Controller
 
         return redirect()->route('admin.account')->with('success', "User {$targetUser->email} has been removed.");
     }
+
+    public function rickroll(): View
+    {
+        if (!auth()->user()->isCreator()) {
+            abort(403, 'Unauthorized.');
+        }
+
+        $clicks = \App\Models\RickrollClick::orderByDesc('last_clicked_at')->paginate(15);
+
+        return view('admin.rickroll', [
+            'active' => 'rickroll',
+            'clicks' => $clicks,
+        ]);
+    }
 }
