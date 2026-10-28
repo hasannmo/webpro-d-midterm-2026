@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -11,6 +12,14 @@ Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 Route::get('/product/{productName}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/checkout/{productName}', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout/{productName}', [CheckoutController::class, 'confirm'])->name('checkout.confirm');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/order', [AdminController::class, 'order'])->name('order');
+    Route::get('/product', [AdminController::class, 'product'])->name('product');
+    Route::get('/account', [AdminController::class, 'account'])->name('account');
+});
+
 
 
 

@@ -1,14 +1,18 @@
 @props([
     'active' => 'dashboard',
-    'items' => [
-        ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'layout-dashboard', 'href' => '#'],
-        ['key' => 'order', 'label' => 'Order', 'icon' => 'shopping-bag', 'href' => '#'],
-        ['key' => 'product', 'label' => 'Product', 'icon' => 'boxes', 'href' => '#'],
-        ['key' => 'account', 'label' => 'Account', 'icon' => 'person-standing', 'href' => '#'],
-    ],
+    'items' => null,
 ])
 
-<nav aria-label="Dashboard menu" {{ $attributes->class('w-full bg-brand-soft px-6 py-8 md:w-[260px]') }}>
+@php
+    $items = $items ?? [
+        ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'layout-dashboard', 'href' => route('admin.dashboard')],
+        ['key' => 'order', 'label' => 'Order', 'icon' => 'shopping-bag', 'href' => route('admin.order')],
+        ['key' => 'product', 'label' => 'Product', 'icon' => 'boxes', 'href' => route('admin.product')],
+        ['key' => 'account', 'label' => 'Account', 'icon' => 'person-standing', 'href' => route('admin.account')],
+    ];
+@endphp
+
+<nav aria-label="Dashboard menu" {{ $attributes->class('sticky top-20 z-10 w-full bg-brand-soft px-6 py-8 md:w-[260px] md:self-start') }}>
     <ul class="flex flex-row gap-2 overflow-x-auto md:flex-col md:gap-3 md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         @foreach ($items as $item)
             @php($isActive = $item['key'] === $active)
