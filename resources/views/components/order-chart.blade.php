@@ -43,7 +43,7 @@
 @endphp
 
 <div class="relative flex h-full w-full flex-col justify-between p-4 md:p-6" data-chart-root>
-    <div class="relative flex-1 w-full overflow-hidden">
+    <div class="relative flex-1 w-full">
         <svg viewBox="0 0 {{ $viewWidth }} {{ $viewHeight }}" class="h-full w-full overflow-visible" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="chartGradient-{{ md5($polylineStr) }}" x1="0" y1="0" x2="0" y2="1">
@@ -99,7 +99,7 @@
 
         {{-- Floating HTML Tooltip --}}
         <div data-tooltip hidden
-             class="pointer-events-none absolute z-30 -translate-x-1/2 rounded-xl border border-sand bg-white/95 px-3 py-1.5 shadow-[0_4px_16px_rgb(43_36_32/0.14)] backdrop-blur-sm transition-[left,top] duration-75">
+             class="pointer-events-none absolute z-30 whitespace-nowrap rounded-xl border border-sand bg-white/95 px-3 py-1.5 shadow-[0_4px_16px_rgb(43_36_32/0.14)] backdrop-blur-sm transition-[left,top] duration-75">
             <p class="text-xs font-semibold text-ink" data-tooltip-time></p>
             <p class="text-xs font-medium text-brand-text"><span data-tooltip-val></span> orders</p>
         </div>
@@ -124,17 +124,23 @@
                         tooltipTime.textContent = label;
                         tooltipVal.textContent = val;
 
-                        // Clamp X so tooltip doesn't go off left/right edges
-                        const clampedX = Math.max(8, Math.min(92, x));
-                        tooltip.style.left = `${clampedX}%`;
+                        // Align tooltip horizontally to prevent clipping on left or right
+                        let transformX = '-50%';
+                        if (x < 12) {
+                            transformX = '0%'; // Align left edge with point if near left border
+                        } else if (x > 88) {
+                            transformX = '-100%'; // Align right edge with point if near right border
+                        }
 
-                        // If point is near the top (e.g. y <= 25%), position tooltip below the point
+                        // Position vertically
                         if (y <= 25) {
+                            tooltip.style.left = `${x}%`;
                             tooltip.style.top = `calc(${y}% + 18px)`;
-                            tooltip.style.transform = 'translate(-50%, 0)';
+                            tooltip.style.transform = `translate(${transformX}, 0)`;
                         } else {
+                            tooltip.style.left = `${x}%`;
                             tooltip.style.top = `calc(${y}% - 14px)`;
-                            tooltip.style.transform = 'translate(-50%, -100%)';
+                            tooltip.style.transform = `translate(${transformX}, -100%)`;
                         }
 
                         tooltip.hidden = false;
