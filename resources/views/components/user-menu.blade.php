@@ -2,7 +2,12 @@
     'wishlistHref' => '#',
     'orderHref' => '#',
     'logoutAction' => '#',
+    'loginHref' => '#',
 ])
+
+@php
+    $isLoggedIn = auth()->check();
+@endphp
 
 <div data-user-menu {{ $attributes->class('relative') }}>
     <button type="button" data-trigger aria-label="Open menu" aria-haspopup="menu" aria-expanded="false"
@@ -22,15 +27,29 @@
             My Order
         </a>
 
+        @if ($isLoggedIn && auth()->user()->isAdmin())
+            <a href="{{ route('admin.dashboard') }}" role="menuitem"
+               class="block px-5 py-3 text-base font-normal text-brand-text transition-colors duration-150 hover:bg-cream-dark focus-visible:bg-cream-dark outline-none">
+                Admin Panel
+            </a>
+        @endif
+
         <div class="my-1 border-t border-sand"></div>
 
-        <form method="POST" action="{{ $logoutAction }}">
-            @csrf
-            <button type="submit" role="menuitem"
-                    class="block w-full cursor-pointer px-5 py-3 text-left text-base font-normal text-danger transition-colors duration-150 hover:bg-cream-dark focus-visible:bg-cream-dark outline-none">
-                Log out
-            </button>
-        </form>
+        @if ($isLoggedIn)
+            <form method="POST" action="{{ $logoutAction }}">
+                @csrf
+                <button type="submit" role="menuitem"
+                        class="block w-full cursor-pointer px-5 py-3 text-left text-base font-normal text-danger transition-colors duration-150 hover:bg-cream-dark focus-visible:bg-cream-dark outline-none">
+                    Log out
+                </button>
+            </form>
+        @else
+            <a href="{{ $loginHref }}" role="menuitem"
+               class="block px-5 py-3 text-base font-normal text-brand-text transition-colors duration-150 hover:bg-cream-dark focus-visible:bg-cream-dark outline-none">
+                Log In
+            </a>
+        @endif
     </div>
 </div>
 

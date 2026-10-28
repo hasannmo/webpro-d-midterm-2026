@@ -17,8 +17,9 @@
                 <a href="{{ route('wishlist') }}" aria-label="Wishlist"><x-icon name="heart" :size="28" /></a>
                 <x-user-menu
                     :wishlist-href="route('wishlist')"
-                    :order-href="route('admin.order')"
-                    :logout-action="route('home')" />
+                    :order-href="auth()->check() ? route('admin.order') : route('login')"
+                    :logout-action="route('logout')"
+                    :login-href="route('login')" />
             </div>
         @else
             <div class="header-icons">
