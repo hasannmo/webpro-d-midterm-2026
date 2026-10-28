@@ -6,11 +6,11 @@ A clothing showcase platform featuring the most popular outerwear, tops, and bot
 
 ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?logo=laravel&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-777BB4?logo=php&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)
+
 
 ### 🌐 [Visit Website](https://mijusan.wasmer.app/)
 
-![Landing Page](screenshots/landing-page.png)
+![Landing Page](<img width="1901" height="856" alt="image" src="https://github.com/user-attachments/assets/274e38c4-a09c-4164-9b49-7c4a94d2a590" />)
 
 </div>
 
