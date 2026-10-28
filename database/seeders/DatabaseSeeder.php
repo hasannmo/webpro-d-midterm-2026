@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 99999,
                 'category' => 'top',
                 'image' => 'basic-shirt-short-sleeve.png',
-                'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                'description' => 'A wardrobe essential short-sleeve button-up shirt tailored from breathable cotton fabric with a chest pocket and relaxed Cuban collar, ideal for warm weather and effortless casual styling.',
             ],
             [
                 'name' => 'Black Blazer',
