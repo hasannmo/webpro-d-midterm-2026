@@ -9,7 +9,9 @@
         @if (!$isAdmin)
             <form class="search-bar" action="{{ route('search') }}" method="GET" role="search">
                 <input type="search" name="q" value="{{ request('q') }}"
-                       placeholder="Searching for simplicity?" aria-label="Search">
+                       placeholder="Searching for simplicity?"
+                       class="desktop-search-input"
+                       aria-label="Search">
                 <button type="submit" aria-label="Search"><x-icon name="search" :size="20" /></button>
             </form>
 
@@ -54,8 +56,20 @@
                 }
             };
 
+            const searchInput = header.querySelector('.search-bar input');
+            const updatePlaceholder = () => {
+                if (!searchInput) return;
+                if (window.innerWidth <= 768) {
+                    searchInput.setAttribute('placeholder', 'Searching for...');
+                } else {
+                    searchInput.setAttribute('placeholder', 'Searching for simplicity?');
+                }
+            };
+
             window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', updatePlaceholder, { passive: true });
             onScroll();
+            updatePlaceholder();
         });
     </script>
 @endonce

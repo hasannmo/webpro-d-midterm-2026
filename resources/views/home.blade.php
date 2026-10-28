@@ -14,7 +14,7 @@
     <section class="section">
         <div class="section__inner">
             <h2 class="section-title">Popular Product</h2>
-            <x-product-table :items="$popularProducts" />
+            <x-product-table :items="$popularProducts" :columns="2" />
         </div>
     </section>
 

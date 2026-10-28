@@ -7,12 +7,13 @@
 
 @php
     $maxVal = max(array_merge($data, [1]));
-    $paddingTop = 50;
-    $paddingBottom = 40;
-    $paddingLeft = 50;
-    $paddingRight = 40;
     $viewWidth = 800;
-    $viewHeight = $height;
+    $viewHeight = 440;
+
+    $paddingTop = 28;
+    $paddingBottom = 42;
+    $paddingLeft = 52;
+    $paddingRight = 36;
 
     $plotWidth = $viewWidth - $paddingLeft - $paddingRight;
     $plotHeight = $viewHeight - $paddingTop - $paddingBottom;
@@ -42,9 +43,9 @@
     $gridLinesCount = 4;
 @endphp
 
-<div class="relative flex h-full w-full flex-col justify-between p-4 md:p-6" data-chart-root>
-    <div class="relative flex-1 w-full">
-        <svg viewBox="0 0 {{ $viewWidth }} {{ $viewHeight }}" class="h-full w-full overflow-visible" preserveAspectRatio="none">
+<div class="relative flex h-full w-full flex-col justify-between p-2.5 sm:p-4 md:p-6" data-chart-root>
+    <div class="relative flex-1 w-full min-h-0">
+        <svg viewBox="0 0 {{ $viewWidth }} {{ $viewHeight }}" class="h-full w-full" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="chartGradient-{{ md5($polylineStr) }}" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stop-color="#f47b2c" stop-opacity="0.35" />
@@ -88,7 +89,7 @@
                             style="transform-origin: {{ $pt['x'] }}px {{ $pt['y'] }}px; transform-box: view-box;" />
 
                     {{-- Axis text --}}
-                    <text x="{{ $pt['x'] }}" y="{{ $paddingTop + $plotHeight + 24 }}"
+                    <text x="{{ $pt['x'] }}" y="{{ $paddingTop + $plotHeight + 20 }}"
                           text-anchor="middle" fill="#7a6e65" font-size="13" font-family="sans-serif"
                           class="transition-colors group-hover:fill-brand-text group-hover:font-semibold">
                         {{ $pt['label'] }}

@@ -14,7 +14,7 @@
 <section {{ $attributes->class('w-full rounded-2xl border border-sand bg-white p-4 sm:p-6 shadow-[0_4px_20px_rgb(43_36_32/0.06)] md:p-8') }}>
     <x-admin-range-select :selected="$selected" navigate="true" />
 
-    <div class="mt-3 h-[240px] sm:h-[320px] w-full overflow-hidden rounded-lg bg-cream-dark md:h-[500px]">{{ $chart ?? '' }}</div>
+    <div class="mt-3 h-[240px] sm:h-[320px] w-full rounded-lg bg-cream-dark md:h-[500px]">{{ $chart ?? '' }}</div>
 
     <div class="mt-3 flex min-h-[64px] sm:min-h-[76px] items-center justify-between gap-3 border-t border-muted/40 px-1 sm:px-2.5">
         <p class="text-sm sm:text-base md:text-[18px] font-medium text-black">Total Order : {{ $format($totalOrder) }}</p>

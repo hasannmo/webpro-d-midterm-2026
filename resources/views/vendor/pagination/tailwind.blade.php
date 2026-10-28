@@ -25,8 +25,8 @@
         </div>
 
         {{-- Desktop View --}}
-        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between sm:gap-4">
-            <div>
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between sm:gap-2 md:gap-4">
+            <div class="shrink-0">
                 <p class="text-xs md:text-sm text-muted">
                     {!! __('Showing') !!}
                     @if ($paginator->firstItem())
@@ -42,8 +42,8 @@
                 </p>
             </div>
 
-            <div>
-                <span class="inline-flex items-center gap-1">
+            <div class="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden py-1">
+                <span class="inline-flex items-center gap-1 shrink-0">
                     {{-- Previous Page Link --}}
                     @if ($paginator->onFirstPage())
                         <span aria-disabled="true" aria-label="{{ __('pagination.previous') }}">

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class RickrollController extends Controller
 {
-    public const RICKROLL_URL = 'https://youtu.be/dQw4w9WgXcQ?si=uGhb4VbGscdccpz8';
+    public const RICKROLL_URL = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&autoplay=1';
 
     /**
      * Handle the redirect click, record click count & timestamp, then redirect to the video.
