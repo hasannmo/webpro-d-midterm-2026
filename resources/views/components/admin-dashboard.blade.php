@@ -12,9 +12,9 @@
 @endphp
 
 <section {{ $attributes->class('w-full rounded-2xl border border-sand bg-white p-6 shadow-[0_4px_20px_rgb(43_36_32/0.06)] md:p-9') }}>
-    <x-admin-range-select :selected="$selected" />
+    <x-admin-range-select :selected="$selected" navigate="true" />
 
-    <div class="mt-3 h-[280px] w-full rounded-lg bg-cream-dark md:h-[560px]">{{ $chart ?? '' }}</div>
+    <div class="mt-3 h-[280px] w-full overflow-hidden rounded-lg bg-cream-dark md:h-[560px]">{{ $chart ?? '' }}</div>
 
     <div class="mt-3 flex min-h-[82px] items-center justify-between gap-4 border-t border-muted/40 px-2.5">
         <p class="text-[18px] font-medium text-black">Total Order : {{ $format($totalOrder) }}</p>

@@ -9,21 +9,27 @@ class HomeController extends Controller
 {
     public function index(): View
     {
-        $heroBanner = 'hero-banner.jpeg';
-
-        $heroSlides = [
-            [
-                'image' => asset('images/' . $heroBanner),
-                'alt' => 'mijusan hero banner',
-                'href' => '#',
-            ],
+        $heroBanners = [
+            'hero-banner.jpeg',
+            'hero-banner1.jpg',
+            'hero-banner2.jpg',
+            'hero-banner3.jpg',
         ];
+
+        $heroSlides = array_map(function ($banner, $index) {
+            return [
+                'image' => asset('images/' . $banner),
+                'alt' => 'mijusan hero banner ' . ($index + 1),
+                'href' => '#',
+            ];
+        }, $heroBanners, array_keys($heroBanners));
 
         $heroCards = [
             'hero-1.png',
             'hero-2.png',
             'hero-3.png',
             'hero-4.jpeg',
+            'hero-5.jpg',
         ];
 
         $heroCardItems = array_map(function ($image, $index) {
@@ -66,7 +72,8 @@ class HomeController extends Controller
         };
 
         return view('home', [
-            'heroBanner' => $heroBanner,
+            'heroBanner' => $heroBanners[0],
+            'heroBanners' => $heroBanners,
             'heroSlides' => $heroSlides,
             'heroCards' => $heroCards,
             'heroCardItems' => $heroCardItems,
