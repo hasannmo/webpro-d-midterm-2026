@@ -10,7 +10,7 @@ A clothing showcase platform featuring the most popular outerwear, tops, and bot
 
 ### 🌐 [Visit Website](https://mijusan.wasmer.app/)
 
-![Landing Page](<img width="1901" height="856" alt="image" src="https://github.com/user-attachments/assets/274e38c4-a09c-4164-9b49-7c4a94d2a590" />)
+<img width="1901" alt="Landing Page" src="https://github.com/user-attachments/assets/274e38c4-a09c-4164-9b49-7c4a94d2a590" />
 
 </div>
 
