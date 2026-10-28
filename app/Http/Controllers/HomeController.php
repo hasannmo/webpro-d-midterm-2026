@@ -82,7 +82,7 @@ class HomeController extends Controller
                     'price' => 299000,
                     'image' => asset('images/' . $image),
                     'secondImage' => asset('images/' . $image),
-                    'href' => '#',
+                    'href' => route('product.show', ['productName' => $base]),
                 ];
             }, $images);
         };

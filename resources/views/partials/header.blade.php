@@ -9,7 +9,7 @@
         </form>
 
         <div class="header-icons">
-            <a href="#" aria-label="Wishlist"><x-icon name="heart" :size="28" /></a>
+            <a href="{{ route('wishlist') }}" aria-label="Wishlist"><x-icon name="heart" :size="28" /></a>
             <button type="button" aria-label="Menu"><x-icon name="menu" :size="36" /></button>
         </div>
     </div>
