@@ -39,30 +39,35 @@
 
     @once
         <script>
-            document.querySelectorAll('[data-section-carousel]').forEach((carousel) => {
-                const track = carousel.querySelector('[data-track]');
-                const prev = carousel.querySelector('[data-prev]');
-                const next = carousel.querySelector('[data-next]');
-                const hiddenClasses = ['opacity-0', 'pointer-events-none'];
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('[data-section-carousel]').forEach((carousel) => {
+                    const track = carousel.querySelector('[data-track]');
+                    const prev = carousel.querySelector('[data-prev]');
+                    const next = carousel.querySelector('[data-next]');
+                    const hiddenClasses = ['opacity-0', 'pointer-events-none'];
 
-                const toggle = (button, visible) => {
-                    hiddenClasses.forEach((c) => button.classList.toggle(c, !visible));
-                };
+                    const toggle = (button, visible) => {
+                        hiddenClasses.forEach((c) => button.classList.toggle(c, !visible));
+                    };
 
-                const update = () => {
-                    const max = track.scrollWidth - track.clientWidth - 1;
-                    toggle(prev, track.scrollLeft > 0);
-                    toggle(next, track.scrollLeft < max);
-                };
+                    const update = () => {
+                        const max = track.scrollWidth - track.clientWidth - 2;
+                        toggle(prev, track.scrollLeft > 4);
+                        toggle(next, track.scrollLeft < max);
+                    };
 
-                const step = () => track.clientWidth * 0.8;
+                    const step = () => Math.max(280, track.clientWidth * 0.75);
 
-                prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-                next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
-                track.addEventListener('scroll', update, { passive: true });
-                window.addEventListener('resize', update);
+                    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+                    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+                    track.addEventListener('scroll', update, { passive: true });
+                    window.addEventListener('resize', update, { passive: true });
 
-                update();
+                    // Initial update and delayed check after images render
+                    update();
+                    setTimeout(update, 200);
+                    setTimeout(update, 800);
+                });
             });
         </script>
     @endonce
