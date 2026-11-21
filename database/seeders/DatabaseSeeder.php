@@ -257,10 +257,11 @@ class DatabaseSeeder extends Seeder
         $startDate = Carbon::now()->subYear();
         $now = Carbon::now();
 
-        // Generate ~140 distributed orders over the past 365 days
+        // Generate ~140 distributed orders over the past 365 days from demo customers only
+        $customerUsers = array_values(array_filter($createdUsers, fn($u) => !in_array(strtolower($u->role), ['administrator', 'creator', 'admin'])));
         $orderCounter = 1;
         for ($date = $startDate->copy(); $date->lte($now); $date->addDays(rand(1, 4))) {
-            $user = $createdUsers[array_rand($createdUsers)];
+            $user = !empty($customerUsers) ? $customerUsers[array_rand($customerUsers)] : $createdUsers[array_rand($createdUsers)];
             $product = $allProducts->random();
             $orderDate = $date->copy()->setTime(rand(8, 22), rand(0, 59), rand(0, 59));
 

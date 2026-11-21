@@ -59,6 +59,11 @@ class User extends Authenticatable
         return $this->hasMany(Wishlist::class);
     }
 
+    public function cartItems(): HasMany
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
     public function isAdmin(): bool
     {
         $role = strtolower((string) $this->role);

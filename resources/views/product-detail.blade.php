@@ -22,6 +22,7 @@
 
                 <div class="flex flex-col justify-center pt-1 md:pt-6">
                     <x-product-detail
+                        :id="$product['id']"
                         :name="$product['name']"
                         :price="$product['price']"
                         :description="$product['description']"

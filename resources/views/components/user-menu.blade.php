@@ -26,12 +26,21 @@
             Wishlist
         </a>
 
+        <a href="{{ $isLoggedIn ? route('cart.index') : route('login') }}" role="menuitem"
+           class="block px-5 py-3 text-base font-normal text-black transition-colors duration-150 hover:bg-cream-dark focus-visible:bg-cream-dark outline-none">
+            Shopping Cart
+        </a>
+
         <a href="{{ $orderHref }}" role="menuitem"
            class="block px-5 py-3 text-base font-normal text-black transition-colors duration-150 hover:bg-cream-dark focus-visible:bg-cream-dark outline-none">
-            {{ $isLoggedIn && auth()->user()->isAdmin() ? 'Manage Orders' : 'My Order' }}
+            My Order
         </a>
 
         @if ($isLoggedIn && auth()->user()->isAdmin())
+            <a href="{{ route('admin.order') }}" role="menuitem"
+               class="block px-5 py-3 text-base font-normal text-black transition-colors duration-150 hover:bg-cream-dark focus-visible:bg-cream-dark outline-none">
+                Manage Orders
+            </a>
             <a href="{{ route('admin.dashboard') }}" role="menuitem"
                class="block px-5 py-3 text-base font-normal text-brand-text transition-colors duration-150 hover:bg-cream-dark focus-visible:bg-cream-dark outline-none">
                 Admin Panel

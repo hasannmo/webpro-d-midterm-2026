@@ -64,5 +64,10 @@ class Product extends Model
         }
         return asset('images/' . $this->second_image);
     }
+
+    public function cartItems(): HasMany
+    {
+        return $this->hasMany(CartItem::class);
+    }
 }
 

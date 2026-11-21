@@ -25,9 +25,20 @@
                     <a href="{{ route('wishlist') }}" aria-label="Wishlist" class="flex items-center text-white transition-opacity hover:opacity-80">
                         <x-icon name="heart" :size="22" class="md:h-[26px] md:w-[26px]" />
                     </a>
+                    @php
+                        $cartCount = auth()->check() ? auth()->user()->cartItems()->sum('quantity') : 0;
+                    @endphp
+                    <a href="{{ auth()->check() ? route('cart.index') : route('login') }}" aria-label="Shopping Cart" class="relative flex items-center text-white transition-opacity hover:opacity-80">
+                        <x-icon name="shopping-cart" :size="22" class="md:h-[26px] md:w-[26px]" />
+                        @if ($cartCount > 0)
+                            <span data-cart-badge class="absolute -top-1.5 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold text-brand shadow-xs">
+                                {{ $cartCount > 99 ? '99+' : $cartCount }}
+                            </span>
+                        @endif
+                    </a>
                     <x-user-menu
                         :wishlist-href="route('wishlist')"
-                        :order-href="auth()->check() ? (auth()->user()->isAdmin() ? route('admin.order') : route('myorder')) : route('login')"
+                        :order-href="auth()->check() ? route('myorder') : route('login')"
                         :logout-action="route('logout')"
                         :login-href="route('login')" />
                 </div>
